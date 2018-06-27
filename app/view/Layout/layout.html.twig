@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="http://localhost/meme_generator/">
+        <!--Import Google Icon Font-->
+        
+        <link rel="stylesheet" href="./assets/css/materialize.min.css">
+        <link rel="stylesheet" href="./assets/css/style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>{% block title %}Meme Generator{% endblock %}</title>
+    </head>
+    
+    <body class="bgcolor2">
+        <header class="bgcolor1 col s12 m12">
+            {% include 'Layout/nav.html.twig'%}  
+            <div class="flex jcbetween">
+                <a href="index.php"> <img src="img/logo.png" alt="logo" class="img_resize padding15p"></a>
+                <nav class="bgnocolor container flex jccenter">
+                    <ul>
+                        <li><a href="#gallerie" class="fs24">Gallerie</a></li>
+                        <li><a href="#upload" class="fs24">Upload</a></li>
+                        <li><a href="#historique" class="fs24">Historique</a></li>
+                    </ul>
+
+                </nav>
+                <img src="img/rouages.png" alt="rouages" class="img_resize">
+            </div>
+        </header>
+        
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        
+        {% include 'Layout/footer.html.twig' %}   
+
+    </body>
+</html>
