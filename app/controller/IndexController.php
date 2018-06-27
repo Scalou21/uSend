@@ -16,26 +16,25 @@ class IndexController extends Controller {
                         $uploadOk = 1;
                         $upload = Gallery::getUploads();
 
-                        
 
                         
-                    } else {
+                    /* } else {
                         echo "Le fichier n'est pas une image.";
                         $uploadOk = 0;
-                    }
+                    } */
                 
-                // Check file size
-                if ($_FILES["fileToUpload"]["size"] > 500000) {
-                    echo "Sorry, your file is too large.";
+                // Verif de la taille du fichier
+                if ($_FILES["fileToUpload"]["size"] > 500000000000) {
+                    echo "Désolé, votre fichier est trop volumineux.";
                     $uploadOk = 0;
                 }
-                // Allow certain file formats
+                // Exclue les fichiers de type .exe
 
-                $allowed = array('png','jpg','jpeg','PNG','JPG','JPEG');
+                $forbidden = array('exe');
                 $nomImage = $_FILES['fileToUpload']['name'];
                 $ext = pathinfo($nomImage, PATHINFO_EXTENSION);
-                if(!in_array($ext, $allowed) ){
-                    echo "Merci de choisir une image au format .jpg ou .png";
+                if(in_array($ext, $forbidden) ){
+                    echo "Les fichiers de type .exe ne sont pas autorisés";
                     
                 }
 
@@ -43,7 +42,7 @@ class IndexController extends Controller {
     
                 // Check if $uploadOk is set to 0 by an error
                 if ($uploadOk == 0) {
-                    echo "Désolé, votre image n'a pas été uploadée";
+                    echo "Désolé, votre fichier n'a pas été uploadé";
                 // if everything is ok, try to upload file
                 }
                 
@@ -52,12 +51,10 @@ class IndexController extends Controller {
 
         
 
-        $memes = Gallery::getMemes();        
         $displayUrl = Gallery::displayUrl();
 
 
         echo $template->render(array(
-            'memes'  => $memes,
             'url' => $displayUrl,
             'upload' => $upload
         ));
