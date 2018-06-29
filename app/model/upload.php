@@ -21,7 +21,8 @@ class Upload extends Model {
         if(isset($_FILES["fileToUpload"])){
         
         $filename = $_FILES["fileToUpload"]['name'];
-        $username = $_POST['user_nom'];
+        $usermail = $_POST['mail_user'];
+        $destmail = $_POST['mail_dest'];
         $uploaded = time() . basename($_FILES["fileToUpload"]["name"]);
         $uploaded = str_replace(" ", "_", $uploaded);
         
@@ -33,24 +34,26 @@ class Upload extends Model {
         }
                 $db = Database::getInstance();
                 $sql = "INSERT INTO fichiers (nom_fichier) VALUES (:fichier_nom)
-                INSERT INTO fichiers (nom_user) VALUES (:user_nom)";        
+                INSERT INTO fichiers (mail_user) VALUES (:mail_user)
+                INSERT INTO fichiers (mail_dest) VALUES (:mail_dest)";        
                 $stmt = $db->prepare($sql);
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
                 $stmt->bindValue(':fichier_nom', $uploaded, PDO::PARAM_STR);
-                $stmt->bindValue(':user_nom', $username, PDO::PARAM_STR);
+                $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
+                $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
                 $stmt->execute();
                 return $stmt->fetchAll();
         }
 
 
-        public static function displayUrl(){
+        /* public static function displayUrl(){
 
                 $db = Database::getInstance();
                 $sql = "SELECT * FROM fichiers ORDER BY nom_fichier DESC LIMIT 1";
                 $stmt = $db->query($sql);
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
                 return $stmt->fetchAll();
-        }
+        } */
         
 }
 

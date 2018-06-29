@@ -11,7 +11,6 @@ class Database {
    }
 
    protected function __construct() {
-      // A faire : fichier de config
       $this->_db = new PDO(
          "mysql:host=localhost;dbname=usend;charset=utf8",
          "root",

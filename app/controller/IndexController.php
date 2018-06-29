@@ -49,7 +49,7 @@ class IndexController extends Controller {
             }
         
 
-        $displayUrl = Upload::displayUrl();
+        /* $displayUrl = Upload::displayUrl(); */
 
 
         
