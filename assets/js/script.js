@@ -1,6 +1,6 @@
 M.AutoInit();
 
-document.addEventListener('DOMContentLoaded', function() {
+/* document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
   });
@@ -17,25 +17,13 @@ for (i=0; i<gallery.length; i++){
         output.src = img;
 })
 
-}
+} */
 
-/* Smooth Scrolling */
 
-$('a[href^="#"]').on('click', function(event) {
-    var target = $(this.getAttribute('href'));
-    if( target.length) {
-        event.preventDefault();
-
-        var scroll = target.offset().top;
-        $('html, body').stop().animate({
-            scrollTop: scroll
-        }, 1000);
-    }
-});
 
 /* Button copy to clipboard pour l'url */
 
-var urltoCopy = $('#lienImage'),
+/* var urltoCopy = $('#lienImage'),
     buttonToCopy = $('#buttonCopy');
 
 buttonToCopy.click(function(){
@@ -44,6 +32,6 @@ if(document.execCommand('copy')){
     buttonToCopy.addClass('copied');
     }
 return false;
-});
+}); */
 
 
