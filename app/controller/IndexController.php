@@ -1,7 +1,5 @@
 <?php
-
 class IndexController extends Controller {
-
     public function display() {
         $template = $this->twig->loadTemplate('/Index/display.html.twig');
         $upload = '';
@@ -9,17 +7,13 @@ class IndexController extends Controller {
     
         if(isset($_FILES["fileToUpload"]))  {      
             $uploadOk = 1;
-
             //print_r($_FILES['fileToUpload']); die();
-
             $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     
                     if($check !== false) {
                         /* echo "File is an image - " . $check["mime"] . "."; */
                         $uploadOk = 1;
                         $upload = Upload::getUploads();
-
-
                         
                     /* } else {
                         echo "Le fichier n'est pas une image.";
@@ -32,7 +26,6 @@ class IndexController extends Controller {
                     $uploadOk = 0;
                 }
                 // Exclue les fichiers de type .exe
-
                 $forbidden = array('exe');
                 $nomImage = $_FILES['fileToUpload']['name'];
                 $ext = pathinfo($nomImage, PATHINFO_EXTENSION);
@@ -40,7 +33,6 @@ class IndexController extends Controller {
                     echo "Les fichiers de type .exe ne sont pas autorisés";
                     
                 }
-
                 
     
                 // Check if $uploadOk is set to 0 by an error
@@ -51,17 +43,12 @@ class IndexController extends Controller {
                 
             }
         
-
         /* $displayUrl = Upload::displayUrl(); */
-
-
         
-
    }
    echo $template->render(array(
     /* 'url' => $displayUrl, */
     'upload' => $upload
 ));
-
     }
 }
