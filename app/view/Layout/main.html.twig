@@ -19,10 +19,10 @@
             <hr class="col offset-l3 l6 offset-s2 s8">
 
             <div class="row card-panel login-box bgcolor2 mtop50p">
-                <div class="row">
-                    <input id="file" type="file" name="fileToUpload" accept=".xlsx,.xls,image/*,audio/*,video/*,.doc, .docx,.ppt, .pptx,.txt,.pdf,.psd" class="fs12 color4">
-                </div>
-                <form>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <input id="file" type="file" name="fileToUpload" class="fs12 color4">
+                    </div>
                     <p class="fs18 color4">Envoyer à</p>
                     <input type="email" name="mail_dest" placeholder="Entrez l'e-mail du destinataire" class="color1">
                     <p class="fs18 color4">Votre adresse</p>

@@ -32,17 +32,23 @@ class Upload extends Model {
         $ext = substr($filename, $pos+1); //Avance d'1 dans la chaîne de caractère pour récupérer ce qu'il y a après le "." (extension)
         
         }
+
+        print_r($uploaded);
                 $db = Database::getInstance();
-                $sql = "INSERT INTO fichiers (nom_fichier) VALUES (:fichier_nom)
-                INSERT INTO fichiers (mail_user) VALUES (:mail_user)
-                INSERT INTO fichiers (mail_dest) VALUES (:mail_dest)";        
+                $sql = "INSERT INTO fichiers (nom_fichier, 
+                                              mail_user, 
+                                              mail_dest) VALUES (
+                                              :fichier_nom,
+                                              :mail_user,
+                                              :mail_dest)";        
                 $stmt = $db->prepare($sql);
-                $stmt->setFetchMode(PDO::FETCH_ASSOC);
                 $stmt->bindValue(':fichier_nom', $uploaded, PDO::PARAM_STR);
                 $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
                 $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
                 $stmt->execute();
-                return $stmt->fetchAll();
+                
+                return true;
+
         }
 
 
