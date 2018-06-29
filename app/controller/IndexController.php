@@ -14,7 +14,7 @@ class IndexController extends Controller {
                     if($check !== false) {
                         /* echo "File is an image - " . $check["mime"] . "."; */
                         $uploadOk = 1;
-                        $upload = Gallery::getUploads();
+                        $upload = Upload::getUploads();
 
 
                         
@@ -49,16 +49,16 @@ class IndexController extends Controller {
             }
         
 
+        $displayUrl = Upload::displayUrl();
+
+
         
 
-        $displayUrl = Gallery::displayUrl();
-
-
-        echo $template->render(array(
-            'url' => $displayUrl,
-            'upload' => $upload
-        ));
-
    }
+   echo $template->render(array(
+    /* 'url' => $displayUrl, */
+    'upload' => $upload
+));
 
+    }
 }

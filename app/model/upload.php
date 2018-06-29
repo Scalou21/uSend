@@ -1,6 +1,6 @@
 <?php
 
-class Gallery extends Model {
+class Upload extends Model {
         
 
         /* public static function getMemes() {
@@ -30,7 +30,6 @@ class Gallery extends Model {
         $pos = strrpos($filename, '.'); //Récupère la première apparition d'un "." dans $filename
         $ext = substr($filename, $pos+1); //Avance d'1 dans la chaîne de caractère pour récupérer ce qu'il y a après le "." (extension)
         
-
         }
                 $db = Database::getInstance();
                 $sql = "INSERT INTO fichiers (nom_fichier) VALUES (:fichier_nom)
@@ -43,7 +42,6 @@ class Gallery extends Model {
                 return $stmt->fetchAll();
         }
 
-        /* Bind value et requête à faire pour récupérer le nom de l'utilisateur rentré dans le formulaire */
 
         public static function displayUrl(){
 
