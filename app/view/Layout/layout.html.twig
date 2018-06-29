@@ -15,14 +15,16 @@
     <body class="bgcolor1">
         <header>
             <div class="center-align">
-                <img src="./img/logo.png" alt="logo" class="logo">
-                <hr class="w605p">
+                <img src="./img/logo.png" alt="logo" class="logo mtop30p">
+                <div class="row">
+                    <hr class="col offset-l4 l4 offset-s2 s8">
+                </div>
             </div>
         </header>
         
         <main>
             {% block content %}{% endblock %}
-            {% include 'Layout/form.html.twig' %}
+            {% include 'Layout/main.html.twig' %}
         </main>
         
         {% include 'Layout/footer.html.twig' %}   

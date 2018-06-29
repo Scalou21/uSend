@@ -40,6 +40,9 @@ height:214px;
 /* ------------- Margins & Paddings ------------- */
         .mbot30p{margin-bottom:30px;}
         .padding15p{padding:15px;}
+        .mtop50p{margin-top:50px;}
+        .mtop30p{margin-top:30px;}
+        .mtop20p{margin-top:20px;}
 
 
 /* ------------- Heights ------------- */
@@ -57,11 +60,13 @@ height:214px;
 /* ------------- Spécifiques ------------- */
         .logo{max-width: 135px;
         max-height: 135px;}
-        hr{width:605px;
-        color:#E85743;
+        hr{color:#E85743;
         border:1px solid;
         }
         .opacity70{opacity:0.7;}
+
+        ::placeholder{color:#FFF7F1;
+        font-style:italic;}
 
 
 
@@ -86,6 +91,6 @@ height:214px;
 /* Extra Small Devices, Phones */ 
 @media only screen and (max-width : 480px) {
 
-    hr{display:none;}
+    /* hr{display:none;} */
     
 }
