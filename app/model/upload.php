@@ -106,7 +106,7 @@ class Upload extends Model {
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'uSend - Nouvelle réception';
                 $mail->Body    = 'Bonjour, vous avez reçu un nouveau fichier ! : http://url/usend/upload/'.$id ?> </br>
-                <?php echo $urlMail;
+                <?php
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();
