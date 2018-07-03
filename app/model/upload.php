@@ -53,7 +53,10 @@ class Upload extends Model {
                 $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
                 $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
                 $stmt->execute();
+                $id = $db->lastInsertID();
                 
+                Upload::sendMail($id);
+
                 return true;
         }
         
@@ -66,7 +69,7 @@ class Upload extends Model {
         }
         
 
-        public static function sendMail(){
+        public static function sendMail($id){
 
                 
 
@@ -95,14 +98,15 @@ class Upload extends Model {
                 $mail->addBCC('bcc@example.com'); */
 
                 //Attachments
-               /*  $mail->addAttachment('index-card.html'); */         // Add attachments
+                /*  $mail->addAttachment('index-card.html'); */         // Add attachments
                 /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); */     // Optional name
-                $mail->addAttachment('/tmp/image.jpg', 'new.jpg');
 
+                /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg');*/
                 //Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'uSend - Nouvelle réception';
-                $mail->Body    = 'Bonjour, vous avez reçu un nouveau fichier !';
+                $mail->Body    = 'Bonjour, vous avez reçu un nouveau fichier ! : http://url/usend/upload/'.$id ?> </br>
+                <?php echo $urlMail;
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();

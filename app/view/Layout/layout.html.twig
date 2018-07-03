@@ -31,9 +31,11 @@
 
         {% for urls in url %}
 
-        <input id="lienImage" class="z999 absolute" type="text" value="http://localhost/usend/uploads/{{ urls.nom_fichier }}">
+        <input id="lienImage" name="urlFile" class="z999 absolute" type="text" value="http://localhost/usend/uploads/{{ urls.nom_fichier }}">
 
         {% endfor %}
+        
+        
 
     </body>
 </html>

@@ -13,8 +13,10 @@ class IndexController extends Controller {
                     if($check !== false) {
                         /* echo "File is an image - " . $check["mime"] . "."; */
                         $uploadOk = 1;
+                        
                         $upload = Upload::getUploads();
-                        $email = Upload::sendMail();
+
+                        //$email = Upload::sendMail();
                         
                     /* } else {
                         echo "Le fichier n'est pas une image.";
@@ -47,6 +49,8 @@ class IndexController extends Controller {
         
         
    }
+
+
     $displayUrl = Upload::displayUrl();
    echo $template->render(array(
     'url' => $displayUrl,
