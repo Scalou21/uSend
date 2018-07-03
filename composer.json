@@ -1,6 +1,7 @@
 {
     "require": {
         "twig/twig": "^2.0",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "phpmailer/phpmailer": "^6.0" 
     }
 }
