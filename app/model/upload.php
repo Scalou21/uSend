@@ -144,7 +144,7 @@ class Upload extends Model {
                 $mail->Body = '<div style="text-align:center; font-family:arial; color:#E85743;">
 
                 <img src="cid:logo">
-                <hr style="color:#E85743;">
+                <hr style="color:#E85743; width:50%;">
                 
                 </div>
                 
