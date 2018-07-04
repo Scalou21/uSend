@@ -21,47 +21,79 @@ class Upload extends Model {
 
 
         public static function getUploads(){
-                
-        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/usend/uploads/";
-        
-                if(isset($_FILES["fileToUpload"])){
-                
-                        $filename = $_FILES["fileToUpload"]['name'];
-                        $filename_tmp = $_FILES["fileToUpload"]['tmp_name'];
-                        $usermail = $_POST['mail_user'];
-                        $destmail = $_POST['mail_dest'];
-                        $msg = $_POST['msg_user'];
-                        $uploaded = time() . basename($_FILES["fileToUpload"]["name"]); /* Renvoie le nom du fichier avec l'heure d'upload */
-                        $uploaded = str_replace(" ", "_", $uploaded);
-                        
-                        $target_file = $target_dir . $uploaded; 
-                        
-                        $pos = strrpos($filename, '.'); //Récupère la première apparition d'un "." dans $filename
-                        $ext = substr($filename, $pos+1); //Avance d'1 dans la chaîne de caractère pour récupérer ce qu'il y a après le "." (extension)
-                        
-                        move_uploaded_file($filename_tmp, $target_file);
-                }
-                        
-                $db = Database::getInstance();
-                $sql = "INSERT INTO fichiers (nom_fichier, 
-                                        mail_user, 
-                                        mail_dest,
-                                        msg_user) VALUES (
-                                        :fichier_nom,
-                                        :mail_user,
-                                        :mail_dest,
-                                        :msg_user)";        
-                $stmt = $db->prepare($sql);
-                $stmt->bindValue(':fichier_nom', $uploaded, PDO::PARAM_STR);
-                $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
-                $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
-                $stmt->bindValue(':msg_user', $msg, PDO::PARAM_STR);
-                $stmt->execute();
-                $id = $db->lastInsertID();
-                
-                Upload::sendMail($id, $msg);
+                $return = array();
+                $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/usend/uploads/";
+                $nb_error = 0;
+                if(isset($_FILES["fileToUpload"])){                        
+                        if($_FILES['fileToUpload']['error']){
+                                switch ($_FILES['fileToUpload']['error']){
+                                        case 1: // upload_ERR_INI_SIZE
+                                                $return['msg'] = 'Le fichier n\'a pas le bon format';
+                                                $return['type'] = 'error';
+                                                $nb_error++;
+                                                break;
+                                        case 2: // upload_ERR_FORM_SIZE
+                                                $return['msg'] = 'The file exceeds the limit allowed in the HTML form !';
+                                                $return['type'] = 'error';
+                                                $nb_error++;
+                                                break;
+                                        case 3: // upload_ERR_PARTIAL
+                                                $return['msg'] = 'The file was interrupted during transfer !';
+                                                $return['type'] = 'error';
+                                                $nb_error++;
+                                                break;
+                                        case 4: // upload_ERR_NO_FILE
+                                                $return['msg'] = 'The file you sent has zero size !';
+                                                $return['type'] = 'error';
+                                                $nb_error++;
+                                                break;
+                                }
+                        } else {
+                                $filename = $_FILES["fileToUpload"]['name'];
+                                $filename_tmp = $_FILES["fileToUpload"]['tmp_name'];
 
-                return true;
+                                $usermail = $_POST['mail_user'];
+                                $destmail = $_POST['mail_dest'];
+                                $msg = $_POST['msg_user'];
+
+                                
+                                if($nb_error == 0){
+                                        $uploaded = time() . basename($_FILES["fileToUpload"]["name"]); /* Renvoie le nom du fichier avec l'heure d'upload */
+                                        $uploaded = str_replace(" ", "_", $uploaded);
+                                        
+                                        $target_file = $target_dir . $uploaded; 
+                                        
+                                        $pos = strrpos($filename, '.'); //Récupère la première apparition d'un "." dans $filename
+                                        $ext = substr($filename, $pos+1); //Avance d'1 dans la chaîne de caractère pour récupérer ce qu'il y a après le "." (extension)
+                                        
+                                        move_uploaded_file($filename_tmp, $target_file);
+
+                                        $db = Database::getInstance();
+                                        $sql = "INSERT INTO fichiers (nom_fichier, 
+                                                                mail_user, 
+                                                                mail_dest,
+                                                                msg_user) VALUES (
+                                                                :fichier_nom,
+                                                                :mail_user,
+                                                                :mail_dest,
+                                                                :msg_user)";        
+                                        $stmt = $db->prepare($sql);
+                                        $stmt->bindValue(':fichier_nom', $uploaded, PDO::PARAM_STR);
+                                        $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
+                                        $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
+                                        $stmt->bindValue(':msg_user', $msg, PDO::PARAM_STR);
+                                        $stmt->execute();
+                                        $id = $db->lastInsertID();
+
+                                        Upload::sendMail($id, $msg);
+
+                                        $return['msg'] = 'Fichier bien uploadé et mail envoyé.';
+                                        $return['type'] = 'success';
+                                }
+                        }
+                }
+
+                return $return;
         }
         
         public static function displayUrl(){
@@ -115,7 +147,7 @@ class Upload extends Model {
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();
-                echo 'Message has been sent';
+                /*echo 'Message has been sent'; */
                 } catch (Exception $e) {
                 echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
                 }
