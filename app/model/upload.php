@@ -22,7 +22,7 @@ class Upload extends Model {
 
         public static function getUploads(){
                 
-        $target_dir = "uploads/";
+        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/usend/uploads/";
         
                 if(isset($_FILES["fileToUpload"])){
                 
@@ -30,6 +30,7 @@ class Upload extends Model {
                         $filename_tmp = $_FILES["fileToUpload"]['tmp_name'];
                         $usermail = $_POST['mail_user'];
                         $destmail = $_POST['mail_dest'];
+                        $msg = $_POST['msg_user'];
                         $uploaded = time() . basename($_FILES["fileToUpload"]["name"]); /* Renvoie le nom du fichier avec l'heure d'upload */
                         $uploaded = str_replace(" ", "_", $uploaded);
                         
@@ -44,18 +45,21 @@ class Upload extends Model {
                 $db = Database::getInstance();
                 $sql = "INSERT INTO fichiers (nom_fichier, 
                                         mail_user, 
-                                        mail_dest) VALUES (
+                                        mail_dest,
+                                        msg_user) VALUES (
                                         :fichier_nom,
                                         :mail_user,
-                                        :mail_dest)";        
+                                        :mail_dest,
+                                        :msg_user)";        
                 $stmt = $db->prepare($sql);
                 $stmt->bindValue(':fichier_nom', $uploaded, PDO::PARAM_STR);
                 $stmt->bindValue(':mail_user', $usermail, PDO::PARAM_STR);
                 $stmt->bindValue(':mail_dest', $destmail, PDO::PARAM_STR);
+                $stmt->bindValue(':msg_user', $msg, PDO::PARAM_STR);
                 $stmt->execute();
                 $id = $db->lastInsertID();
                 
-                Upload::sendMail($id);
+                Upload::sendMail($id, $msg);
 
                 return true;
         }
@@ -69,7 +73,7 @@ class Upload extends Model {
         }
         
 
-        public static function sendMail($id){
+        public static function sendMail($id, $msg){
 
                 
 
@@ -80,14 +84,14 @@ class Upload extends Model {
                 try {
                 //Server settings
                 $mail->SMTPDebug = false;                                 // Enable verbose debug output
-                $mail->isSMTP();                                      // Set mailer to use SMTP
+                $mail->isSMTP();                                   // Set mailer to use SMTP
                 $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
                 $mail->Username = 'usend@outlook.fr';                 // SMTP username
                 $mail->Password = 'ACSDIJON21';                           // SMTP password
                 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587;                                      // TCP port to connect to
-                $mail->Charset = 'UTF-8';                                  
+                $mail->CharSet = 'UTF-8';                                  
 
                 //Recipients
                 $mail->setFrom('usend@outlook.fr', 'Mailer');
@@ -105,7 +109,8 @@ class Upload extends Model {
                 //Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'uSend - Nouvelle réception';
-                $mail->Body    = 'Bonjour, vous avez reçu un nouveau fichier ! : http://url/usend/upload/'.$id ?> </br>
+                $mail->Body    = '<div> - uSend - </div>
+                Bonjour, vous avez reçu un message ainsi qu\'un fichier joint  : <br>'.$msg.'  <a href="http://url/usend/upload/'.$id.'">http://url/usend/upload/'.$id. '</a>' ?> </br>
                 <?php
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 

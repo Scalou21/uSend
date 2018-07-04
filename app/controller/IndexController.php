@@ -7,7 +7,7 @@ class IndexController extends Controller {
     
         if(isset($_FILES["fileToUpload"]))  {      
             $uploadOk = 1;
-            //print_r($_FILES['fileToUpload']); die();
+            /* print_r($_FILES['fileToUpload']); die(); */
             $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     
                     if($check !== false) {
