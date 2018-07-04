@@ -119,14 +119,14 @@ class Upload extends Model {
                 $mail->isSMTP();                                   // Set mailer to use SMTP
                 $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $mail->Username = 'usend@outlook.fr';                 // SMTP username
+                $mail->Username = 'usend2@outlook.fr';                 // SMTP username
                 $mail->Password = 'ACSDIJON21';                           // SMTP password
                 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587;                                      // TCP port to connect to
                 $mail->CharSet = 'UTF-8';                                  
 
                 //Recipients
-                $mail->setFrom('usend@outlook.fr', 'Mailer');
+                $mail->setFrom('usend2@outlook.fr', 'Mailer');
                 /* $mail->addAddress('joe@example.net', 'Joe User'); */     // Add a recipient
                 $mail->addAddress($_POST['mail_dest']);               // Name is optional
                 /* $mail->addReplyTo('info@example.com', 'Information');
@@ -135,14 +135,26 @@ class Upload extends Model {
 
                 //Attachments
                 /*  $mail->addAttachment('index-card.html'); */         // Add attachments
-                /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); */     // Optional name
+                $mail->addAttachment('file:///C:/wamp64/www/uSend/img/logo.png', 'logo');     // Optional name
 
                 /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg');*/
                 //Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'uSend - Nouvelle réception';
-                $mail->Body    = '<div> - uSend - </div>
-                Bonjour, vous avez reçu un message ainsi qu\'un fichier joint  : <br>'.$msg.'  <a href="http://url/usend/upload/'.$id.'">http://url/usend/upload/'.$id. '</a>' ?> </br>
+                $mail->Body  = '<div style="text-align:center; font-family:arial; color:#E85743;">
+
+                                        <img src="cid:logo">
+                                        <hr style="color:#E85743;">
+        
+                                </div>
+
+                                <div style="text-align:center; padding-top:30px;">
+                                        
+                                        <p>Bonjour, vous avez reçu un nouveau fichier !</p> <br>
+                                        <p>Message de l\'expéditeur : <br><span style="color:#E85743;">'.$msg.'</span></p> <br>
+                                        <p>Retrouvez votre fichier à cette adresse :</p> <a href="http://url/usend/upload/'.$id.'">http://url/usend/upload/'.$id. '</a>
+                
+                                </div>' ?>
                 <?php
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
