@@ -135,7 +135,7 @@ class Upload extends Model {
 
                 //Attachments
                 /*  $mail->addAttachment('index-card.html'); */         // Add attachments
-                /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); */     // Optional name
+                $mail->addAttachment('file:///C:/wamp64/www/uSend/img/logo.png', 'logo');     // Optional name
 
                 $mail->addAttachment('file:///C:/wamp64/www/uSend/img/logo.png', 'logo');
                 //Content
