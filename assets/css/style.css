@@ -74,6 +74,26 @@ height:214px;}
         font-style:italic;}
         
         .z999{left:-9999px;}
+        .error{
+                background-color:#FFF7F1;
+                color:#E85743;
+                font-size:1.4rem;
+                font-family: 'Roboto', sans-serif;
+                font-weight:600;
+                padding:5px;
+                margin-bottom: 10px;
+
+        }
+        .success{
+                background-color:#FFF7F1;
+                color:#A243E8;
+                font-size:1.4rem;
+                font-family: 'Roboto', sans-serif;
+                font-weight:600;
+                padding:5px;
+                margin-bottom: 10px;
+
+        }
 
 
 /* ------------- Media queries ------------- */

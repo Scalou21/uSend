@@ -11,11 +11,9 @@ class IndexController extends Controller {
             $type = $upload['type'];
         }
 
-        $displayUrl = Upload::displayUrl();
 
         $template = $this->twig->loadTemplate('/Index/display.html.twig');
         echo $template->render(array(
-            'url' => $displayUrl,
             'upload' => $upload,
             'msg'   => $msg,
             'type'  => $type

@@ -7,23 +7,29 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 class Upload extends Model {
-        
-        /* public static function getMemes() {
-                $db = Database::getInstance();
-                $sql = "SELECT nom_fichier FROM fichiers
-                        order by rand()";
-                $stmt = $db->query($sql);
-                $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                return $stmt->fetchAll();
-        } */
-
-        
-
-
+           
         public static function getUploads(){
                 $return = array();
                 $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/usend/uploads/";
                 $nb_error = 0;
+
+                if(isset($_POST['submit'])){
+                        if(empty($_POST['mail_dest']) || empty($_POST['mail_user']) || empty($_POST['msg_user']) || empty($_FILES['fileToUpload'])){
+                        if(empty($_POST['mail_dest'])){
+                        echo "Vous n'avez pas inscrit le mail du destinataire";
+                        }
+                        if(empty($_POST['mail_user'])){
+                        echo "Vous n'avez pas inscrit votre mail";
+                        }
+                        if(empty($_POST['msg_user'])){
+                        echo "Vous n'avez pas inscrit votre message";
+                        }
+                        if(empty($_FILES['fileToUpload'])){
+                        echo "Vous n'avez choisi aucun fichier";
+                        }
+                        return false;
+                        }
+                        }
                 if(isset($_FILES["fileToUpload"])){                        
                         if($_FILES['fileToUpload']['error']){
                                 switch ($_FILES['fileToUpload']['error']){
@@ -33,17 +39,17 @@ class Upload extends Model {
                                                 $nb_error++;
                                                 break;
                                         case 2: // upload_ERR_FORM_SIZE
-                                                $return['msg'] = 'The file exceeds the limit allowed in the HTML form !';
+                                                $return['msg'] = 'Votre fichier dépasse la limite de taille';
                                                 $return['type'] = 'error';
                                                 $nb_error++;
                                                 break;
                                         case 3: // upload_ERR_PARTIAL
-                                                $return['msg'] = 'The file was interrupted during transfer !';
+                                                $return['msg'] = 'Le transfert a échoué';
                                                 $return['type'] = 'error';
                                                 $nb_error++;
                                                 break;
                                         case 4: // upload_ERR_NO_FILE
-                                                $return['msg'] = 'The file you sent has zero size !';
+                                                $return['msg'] = 'Votre fichier n\'a pas de taille';
                                                 $return['type'] = 'error';
                                                 $nb_error++;
                                                 break;
@@ -96,13 +102,7 @@ class Upload extends Model {
                 return $return;
         }
         
-        public static function displayUrl(){
-                $db = Database::getInstance();
-                $sql = "SELECT * FROM fichiers ORDER BY nom_fichier DESC LIMIT 1";
-                $stmt = $db->query($sql);
-                $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                return $stmt->fetchAll();
-        }
+        
         
 
         public static function sendMail($id, $msg){
@@ -119,14 +119,14 @@ class Upload extends Model {
                 $mail->isSMTP();                                   // Set mailer to use SMTP
                 $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $mail->Username = 'usend@outlook.fr';                 // SMTP username
+                $mail->Username = 'usend2@outlook.fr';                 // SMTP username
                 $mail->Password = 'ACSDIJON21';                           // SMTP password
                 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587;                                      // TCP port to connect to
                 $mail->CharSet = 'UTF-8';                                  
 
                 //Recipients
-                $mail->setFrom('usend@outlook.fr', 'Mailer');
+                $mail->setFrom('usend2@outlook.fr', 'Mailer');
                 /* $mail->addAddress('joe@example.net', 'Joe User'); */     // Add a recipient
                 $mail->addAddress($_POST['mail_dest']);               // Name is optional
                 /* $mail->addReplyTo('info@example.com', 'Information');
@@ -137,19 +137,28 @@ class Upload extends Model {
                 /*  $mail->addAttachment('index-card.html'); */         // Add attachments
                 /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); */     // Optional name
 
-                /* $mail->addAttachment('/tmp/image.jpg', 'new.jpg');*/
+                $mail->addAttachment('file:///C:/wamp64/www/uSend/img/logo.png', 'logo');
                 //Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'uSend - Nouvelle réception';
-                $mail->Body    = '<div> - uSend - </div>
-                Bonjour, vous avez reçu un message ainsi qu\'un fichier joint  : <br>'.$msg.'  <a href="http://url/usend/upload/'.$id.'">http://url/usend/upload/'.$id. '</a>' ?> </br>
+                $mail->Body = '<div style="text-align:center; font-family:arial; color:#E85743;">
+
+                <img src="cid:logo">
+                <hr style="color:#E85743;">
+                
+                </div>
+                
+                <div style="text-align:center; padding-top:30px;">
+                
+                <p>Bonjour, vous avez reçu un nouveau fichier !</p> <br>
+                <p>Message de l\'expéditeur : <br><span style="color:#E85743;">'.$msg.'</span></p> <br>
+                <p>Retrouvez votre fichier à cette adresse :</p> <a href="http://url/usend/upload/'.$id.'">http://url/usend/upload/'.$id. '</a>
+                
+                </div>' ?> </br>
                 <?php
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
                 $mail->send();
-                /*echo 'Message has been sent'; */
                 } catch (Exception $e) {
-                echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
                 }
 
         }
